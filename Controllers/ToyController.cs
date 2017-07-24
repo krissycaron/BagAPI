@@ -14,15 +14,13 @@ namespace BagAPI.Controllers
     public class ToyController : Controller
     {
         private BagAPIContext _context;
-
-        public ToyController (BagAPIContext ctx)
+        public ToyController(BagAPIContext ctx)
         {
             _context = ctx;
-        } 
-
+        }
 
         // GET api/values
-         [HttpGet]
+        [HttpGet]
         public IActionResult Get()
         {
             IQueryable<object> toys = from toy in _context.Toy select toy;
@@ -36,34 +34,42 @@ namespace BagAPI.Controllers
 
         }
 
+        // GET api/values/5
+        [HttpGet("{id}")]
+        public string Get(int id)
+        {
+            return "value";
+        }
+
         // POST api/values
-            public IActionResult Post([FromBody] Toy toy)
+        [HttpPost]
+        public IActionResult Post([FromBody] Toy toy)
+        {
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                _context.Toy.Add(toy);
-                
-                try
-                {
-                    _context.SaveChanges();
-                }
-                catch (DbUpdateException)
-                {
-                    if (ToyExists(toy.ToyId))
-                    {
-                        return new StatusCodeResult(StatusCodes.Status409Conflict);
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-
-                return CreatedAtRoute("GetToy", new { id = toy.ToyId }, toy);
+                return BadRequest(ModelState);
             }
+
+            _context.Toy.Add(toy);
+            
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                if (ToyExists(toy.ToyId))
+                {
+                    return new StatusCodeResult(StatusCodes.Status409Conflict);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtRoute("GetToy", new { id = toy.ToyId }, toy);
+        }
 
         private bool ToyExists(int toyId)
         {
@@ -72,14 +78,58 @@ namespace BagAPI.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put(int id, [FromBody] Toy toy)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != toy.ToyId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(toy).State = EntityState.Modified;
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ToyExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return new StatusCodeResult(StatusCodes.Status204NoContent);
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Toy toy = _context.Toy.Single(m => m.ToyId == id);
+            if (toy == null)
+            {
+                return NotFound();
+            }
+
+            _context.Toy.Remove(toy);
+            _context.SaveChanges();
+
+            return Ok(toy);
         }
     }
 }
