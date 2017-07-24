@@ -1,0 +1,8 @@
+/Users/kristincaron/workspace/serverSide/exercises/BagAPI/bin/Debug/netcoreapp1.0/BagAPI.deps.json
+/Users/kristincaron/workspace/serverSide/exercises/BagAPI/bin/Debug/netcoreapp1.0/BagAPI.runtimeconfig.json
+/Users/kristincaron/workspace/serverSide/exercises/BagAPI/bin/Debug/netcoreapp1.0/BagAPI.runtimeconfig.dev.json
+/Users/kristincaron/workspace/serverSide/exercises/BagAPI/obj/Debug/netcoreapp1.0/BagAPI.AssemblyInfo.cs
+/Users/kristincaron/workspace/serverSide/exercises/BagAPI/bin/Debug/netcoreapp1.0/BagAPI.dll
+/Users/kristincaron/workspace/serverSide/exercises/BagAPI/bin/Debug/netcoreapp1.0/BagAPI.pdb
+/Users/kristincaron/workspace/serverSide/exercises/BagAPI/obj/Debug/netcoreapp1.0/BagAPI.dll
+/Users/kristincaron/workspace/serverSide/exercises/BagAPI/obj/Debug/netcoreapp1.0/BagAPI.pdb
