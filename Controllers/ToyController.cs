@@ -35,10 +35,38 @@ namespace BagAPI.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+       [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] Toy toy)
         {
-            return "value";
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != toy.ToyId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(toy).State = EntityState.Modified;
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ToyExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return new StatusCodeResult(StatusCodes.Status204NoContent);
         }
 
         // POST api/values
